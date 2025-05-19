@@ -1,0 +1,43 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432" # Ensure DB_PORT is defined in .env, e.g., 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d # Add this line
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db # Important: Use the service name 'db' for host inside Docker network
+      DB_PORT: 5432 # Postgres listens on 5432 inside the container
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      LLM_API_KEY: ${LLM_API_KEY}
+    volumes:
+      - ./data/videos:/app/data/videos
+      # You might also want to mount your source code for easier development if you're not rebuilding the image on every change for process_video
+      # - ./:/app # Example: Mounts current directory to /app in container
+    ports:
+      - "8001:8000" # Changed host port to 8001 for the 'app' service if FastAPI runs on 8000 later on a different service.
+                    # The CMD in Dockerfile runs process_video.py, not a server.
+                    # The ports here are for the app container if it were running a server.
+                    # If process_video.py is all 'app' does, this port mapping isn't used by it.
+
+volumes:
+  pgdata:

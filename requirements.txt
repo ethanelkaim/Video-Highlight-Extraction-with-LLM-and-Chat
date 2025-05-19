@@ -1,0 +1,10 @@
+SQLAlchemy==2.0.25
+psycopg2-binary==2.9.9
+openai==1.10.0
+python-dotenv==1.0.0
+numpy~=2.2.1
+opencv-python~=4.11.0.86
+google-generativeai
+google~=3.0.0
+openai-whisper
+google-cloud-aiplatform

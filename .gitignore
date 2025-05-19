@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+*.profile
+*.prof
+*.log
+*.sqlite3
+*.db
+
+# Virtual Environments
+venv/
+.venv/
+env/
+.env/
+ENV/
+# If your venv for backend_chat is differently named or located, add that too.
+# e.g., backend_chat/venv/
+
+# IDE and OS specific
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+.env
+*.env
+
+# PostgreSQL data (if you ever run Postgres locally without Docker volumes)
+pgdata/
+
+# Docker build context temporary files (if any)
+docker-build-context-temp/
