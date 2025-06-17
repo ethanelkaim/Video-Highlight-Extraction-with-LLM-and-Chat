@@ -9,12 +9,14 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List, Dict, Any
 from database_chat import fetch_all_highlights_async  # Import the database function
 from llm_module.llm_api import get_embedding  # Import get_embedding
 from chat_logic import find_relevant_highlights, structure_response
 import logging
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
